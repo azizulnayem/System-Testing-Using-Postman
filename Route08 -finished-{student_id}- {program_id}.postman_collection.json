@@ -1,0 +1,211 @@
+{
+	"info": {
+		"_postman_id": "62f2a0d1-0c5e-4ecd-a502-01a4c793fb31",
+		"name": "Route08 /finished/{student_id}/ {program_id}",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "35335342"
+	},
+	"item": [
+		{
+			"name": "TC35",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Completed courses and status are returned\", function () {\r",
+							"    const responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody).to.have.property(\"completed_courses\");\r",
+							"    pm.expect(responseBody).to.have.property(\"status\");\r",
+							"    pm.expect(responseBody.completed_courses).to.be.a(\"number\");\r",
+							"    pm.expect(responseBody.status).to.be.a(\"boolean\");\r",
+							"});\r",
+							"pm.test(\"Graduation eligibility is determined\", function () {\r",
+							"    const responseBody = pm.response.json();\r",
+							"    if (responseBody.status === true) {\r",
+							"        pm.expect(responseBody.completed_courses).to.equal(10);\r",
+							"    } else {\r",
+							"        pm.expect(responseBody.completed_courses).to.be.below(10);\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/finished/1/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"finished",
+						"1",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TC36",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Completed courses and status are returned\", function () {\r",
+							"    const responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody).to.have.property(\"completed_courses\");\r",
+							"    pm.expect(responseBody).to.have.property(\"status\");\r",
+							"    pm.expect(responseBody.completed_courses).to.be.a(\"number\");\r",
+							"    pm.expect(responseBody.status).to.be.a(\"boolean\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Graduation eligibility is determined\", function () {\r",
+							"    const responseBody = pm.response.json();\r",
+							"    if (responseBody.status === true) {\r",
+							"        console.log(\"Eligible for graduation\");\r",
+							"        pm.expect(responseBody.completed_courses).to.equal(10);\r",
+							"    } else {\r",
+							"        console.log(\"Not eligible for graduation\"); \r",
+							"        pm.expect(responseBody.completed_courses).to.be.below(10);\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/finished/2/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"finished",
+						"2",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TC37",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"pm.test(\"Error message for non-existent student\", function () {\r",
+							"    const responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody).to.have.property(\"error\", \"Student ID 100 does not exist\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/finished/100/2",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"finished",
+						"100",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "T38",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"pm.test(\"Error message for non-existent program\", function () {\r",
+							"    const responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody).to.have.property(\"error\", \"Program ID 99 does not exist\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/finished/6/99",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"finished",
+						"6",
+						"99"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

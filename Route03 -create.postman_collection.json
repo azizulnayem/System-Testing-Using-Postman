@@ -1,0 +1,345 @@
+{
+	"info": {
+		"_postman_id": "20928909-8936-4750-b38f-f1374023f573",
+		"name": "Route03 /create",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "35335342"
+	},
+	"item": [
+		{
+			"name": "TC12",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Student information is returned\", function () {\r",
+							"    const responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody).to.have.property(\"name\", \"Mooh\");\r",
+							"    pm.expect(responseBody).to.have.property(\"personnummer\", \"870123-4697\");\r",
+							"    pm.expect(responseBody).to.have.property(\"courses_passed\").that.is.an(\"array\").and.includes(\"CSE2213\", \"CSE1110\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Mooh\",\r\n  \"personnummer\": \"870123-4697\",\r\n  \"courses_passed\": [\"CSE2213\", \"CSE1110\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/create",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TC13",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404 or 409\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([404, 409]); \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Error message is returned\", function () {\r",
+							"    const responseBody = pm.response.text(); \r",
+							"    if (pm.response.code === 409) {\r",
+							"        pm.expect(responseBody).to.include(\"Student with this personnummer already exists\");\r",
+							"    } else if (pm.response.code === 404) {\r",
+							"        pm.expect(responseBody).to.include(\"Not Found\");\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Niaz\",\r\n  \"personnummer\": \"980401-9999\",\r\n  \"courses_passed\": [\"CSE2213\", \"CSE1110\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/create ",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"create "
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TC14",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400 or 404\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([400, 404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Error message is returned\", function () {\r",
+							"    const responseBody = pm.response.text();\r",
+							"    \r",
+							"    if (pm.response.code === 400) {\r",
+							"        pm.expect(responseBody).to.include(\"Invalid input data\"); \r",
+							"    } else if (pm.response.code === 404) {\r",
+							"        pm.expect(responseBody).to.include(\"Not Found\");\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"\",\r\n  \"personnummer\": \"abcsd\",\r\n  \"courses_passed\": [\"CSE2213\", \"CSE1110\"]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/create ",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"create "
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TC15",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400 or 404\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([400, 404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Error message is 'No personnummer field'\", function () {\r",
+							"    const responseBody = pm.response.text();\r",
+							"    if (pm.response.code === 400) {\r",
+							"        const jsonResponse = JSON.parse(responseBody);\r",
+							"        pm.expect(jsonResponse.error).to.eql(\"No personnummer field\");\r",
+							"    } else if (pm.response.code === 404) {\r",
+							"        pm.expect(responseBody).to.include(\"Not Found\");\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Razia\",\r\n  \"courses_passed\": [\"CSE2213\",\"SE1110\",\"SE1111\", \"CSE1110\"]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/create ",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"create "
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TC16",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400 or 404\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([400, 404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Error message for name exceeding length\", function () {\r",
+							"    const responseBody = pm.response.text();\r",
+							"    if (pm.response.code === 400) {\r",
+							"        const jsonResponse = JSON.parse(responseBody);  \r",
+							"        pm.expect(jsonResponse).to.have.property(\"error\", \"Name exceeds maximum allowed length\");\r",
+							"    } else if (pm.response.code === 404) {\r",
+							"        pm.expect(responseBody).to.include(\"Not Found\");\r",
+							"    }\r",
+							"});\r",
+							"console.log(pm.response.text()); \r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Razia Sultana Mohsina Mehnaj Niaz Sami Jahid Hossain Mohsina Razia Rahman Niaz Mohsina Razia\",\r\n  \"personnummer\": \"870123-4697\",\r\n  \"courses_passed\": [\"CSE2213\", \"CSE1158\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/create ",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"create "
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TC17",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400 or 404\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([400, 404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Error message for malformed course ID\", function () {\r",
+							"    const responseBody = pm.response.text();\r",
+							"    \r",
+							"    if (pm.response.code === 400) {\r",
+							"        try {\r",
+							"            const jsonResponse = JSON.parse(responseBody);\r",
+							"            pm.expect(jsonResponse).to.have.property(\"error\").that.includes(\"Malformed course ID\");\r",
+							"        } catch (e) {\r",
+							"            pm.expect.fail(\"Expected JSON response but got HTML: \" + responseBody);\r",
+							"        }\r",
+							"    } else if (pm.response.code === 404) {\r",
+							"        pm.expect(responseBody).to.include(\"Not Found\");\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Niaz Sami\",\r\n  \"personnummer\": \"870123-6697\",\r\n  \"courses_passed\": [\"CSE2213\", \"CSEuiux\"]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/create ",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"create "
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

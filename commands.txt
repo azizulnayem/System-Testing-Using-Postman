@@ -1,0 +1,5 @@
+python -m pip install flask
+set FLASK_APP=app.py
+set FLASK_ENV=development
+python -m pip show flask
+python -m flask run

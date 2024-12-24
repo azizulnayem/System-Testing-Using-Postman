@@ -1,0 +1,346 @@
+{
+	"info": {
+		"_postman_id": "84adbe7f-c1ae-47c8-b7c3-c7b07f18015a",
+		"name": "Route01 /student",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "35335342"
+	},
+	"item": [
+		{
+			"name": "TC1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 120ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(120);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response should be an array\", function () {\r",
+							"    pm.expect(pm.response.json()).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains student details\", function () {\r",
+							"    const students = pm.response.json();\r",
+							"    students.forEach(student => {\r",
+							"        pm.expect(student).to.have.property(\"id\");\r",
+							"        pm.expect(student).to.have.property(\"name\");\r",
+							"        pm.expect(student).to.have.property(\"personnummer\");\r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/student",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"student"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TC2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Response contains Natasha Romanov\", function () {\r",
+							"    const students = pm.response.json();\r",
+							"    const natasha = students.find(student => student.name === \"Natasha Romanov\");\r",
+							"    pm.expect(natasha).to.not.be.undefined;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Only Natasha Romanov is returned\", function () {\r",
+							"    const students = pm.response.json();\r",
+							"    const natasha = students.filter(student => student.name === \"Natasha Romanov\");\r",
+							"    pm.expect(natasha.length).to.equal(1);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/student?name=Natasha Romanov",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"student"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Natasha Romanov"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TC3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Response should be an empty array\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    pm.expect(responseData).to.be.an(\"array\");\r",
+							"    pm.expect(responseData.length).to.equal(0);\r",
+							"});\r",
+							"pm.test(\"Response should contain data\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    pm.expect(responseData.length).to.be.greaterThan(0);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/student",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"student"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TC4",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 120ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(120);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Pagination limit is 5\", function () {\r",
+							"    const students = pm.response.json();\r",
+							"    pm.expect(students.length).to.be.at.most(5);\r",
+							"});\r",
+							"pm.test(\"Response contains students ids\", function () {\r",
+							"    const students = pm.response.json();\r",
+							"    students.forEach(student => {\r",
+							"        pm.expect(student).to.have.property(\"id\");\r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/student?page=1&limit=5",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"student"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TC5",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"pm.test(\"Error message is returned\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response).to.have.property(\"error\", \"Invalid program filter\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/student?program=CSE",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"student"
+					],
+					"query": [
+						{
+							"key": "program",
+							"value": "CSE"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TC6",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Students list should be sorted by name\", function () {\r",
+							"    const students = pm.response.json();\r",
+							"    let sortedAsc = true;\r",
+							"    let sortedDesc = true;\r",
+							"    for (let i = 0; i < students.length - 1; i++) {\r",
+							"        if (students[i].name > students[i + 1].name) {\r",
+							"            sortedAsc = false;\r",
+							"            break;\r",
+							"        }\r",
+							"    }\r",
+							"    for (let i = 0; i < students.length - 1; i++) {\r",
+							"        if (students[i].name < students[i + 1].name) {\r",
+							"            sortedDesc = false;\r",
+							"            break;\r",
+							"        }\r",
+							"    }\r",
+							"    pm.expect(sortedAsc || sortedDesc).to.be.true;\r",
+							"});\r",
+							"pm.test(\"Response should contain students\", function () {\r",
+							"    const students = pm.response.json();\r",
+							"    pm.expect(students.length).to.be.above(0);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/student?sort=name",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"student"
+					],
+					"query": [
+						{
+							"key": "sort",
+							"value": "name"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
